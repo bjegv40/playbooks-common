@@ -1,0 +1,28 @@
+plugin: community.vmware.vmware_vm_inventory
+strict: false
+hostname: "adc-vc.adc.lan"
+username: "{{ lookup('env', 'VMWARE_USER') }}"
+password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
+validate_certs: false
+properties:
+  - name
+  - guest.ipAddress
+  - runtime.powerState
+  - config.guestId
+filters:
+  - runtime.powerState == "poweredOn"
+compose:
+  ansible_host: guest.ipAddress
+  ansible_user: >- {%- if 'win' in (config.guestId | default('')) -%} Administrator {%- else -%} deploy {%- endif -%}
+  ansible_connection: >- {%- if 'win' in (config.guestId | default('')) -%} winrm {%- else -%} ssh {%- endif -%}
+keyed_groups:
+  - key: config.guestId | default('unknow')
+    prefix: guestos
+    separator: "_"
+  - key: runtime.powerState
+    prefix: state
+    separator: "_"
+cache: true
+cache_plugin: ansible.builtin.jsonfile
+cache_connection: /tmp/vmware_inventory_cache
+cache_timeout: 1800

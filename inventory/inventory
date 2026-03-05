@@ -1,0 +1,3 @@
+[inventory]
+enable_plugins = community.vmware.vmware_vm_inventor
+enable_plugins = host_list, ini, yaml, community.general.nmapy
