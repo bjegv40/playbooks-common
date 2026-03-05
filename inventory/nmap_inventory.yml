@@ -1,4 +1,4 @@
 plugin: community.general.nmap
-address: 10.22.56.0/24
+address: 10.22.56.0/24 10.22.255.0/24
 ports: false
 strict: false   
