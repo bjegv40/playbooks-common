@@ -5,7 +5,7 @@
   gather_facts: false
   vars:
     ansible_user: ansible-awx
-    ansible_password_hash: $6$rounds=5000$... # Replace with your hash from step 2
+    ansible_password_hash: b6c29328dbe1cc3259de43bd5f35394b # Replace with your hash from step 2
     sudo_group: wheel  # Use 'sudo' on Debian/Ubuntu, 'wheel' on RHEL/CentOS
 
   tasks:
