@@ -7,9 +7,12 @@
     ansible_user: ansible-awx
     ansible_password_hash: b6c29328dbe1cc3259de43bd5f35394b # Replace with your hash from step 2
     sudo_group: wheel  # Use 'sudo' on Debian/Ubuntu, 'wheel' on RHEL/CentOS
+    sudo_group_ubuntu: sudo  # Use 'sudo' on Debian/Ubuntu, 'wheel' on RHEL/CentOS
+
+
 
   tasks:
-    - name: Create the Ansible user
+    - name: Create the Ansible user for REDHATS
       ansible.builtin.user:
         name: "{{ ansible_user }}"
         password: "{{ ansible_password_hash }}"
@@ -17,7 +20,19 @@
         append: yes
         state: present
         createhome: yes
-        shell: /bin/bash
+        shell: /bin/bash      
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat' or ansible_distribution == 'Rocky'
+
+    - name: Create the Ansible user
+      ansible.builtin.user:
+        name: "{{ ansible_user }}"
+        password: "{{ ansible_password_hash }}"
+        groups: "{{ sudo_group_ubuntu }}"
+        append: yes
+        state: present
+        createhome: yes
+        shell: /bin/bash      
+      when: ansible_distribution == 'Ubuntu' or ansible_distribution
 
     - name: Add SSH public key for passwordless login
       ansible.posix.authorized_key:
