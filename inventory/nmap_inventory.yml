@@ -1,6 +1,8 @@
 plugin: community.general.nmap
-address: 10.22.56.0/24 10.22.255.0/24
+address: 10.22.56.0/24
 ports: false
 strict: false
+ipv4: true
 groups:
   without_hostname: "'10.22.56' in name"
+  with_ssh: "ports | selectattr('service', 'equalto', 'ssh')"
